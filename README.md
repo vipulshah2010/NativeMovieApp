@@ -1,8 +1,6 @@
 # NativeMovieApp
 Simple movie application written in Kotlin Native which consumes https://www.themoviedb.org/documentation/api to fetch trending movie info and display it in RecyclerView.
 
-This application is built to showcase use of Kotlin Native at Droidcon Berlin'19 workshop.
-
 ## Features
 
 With the app, you can:
