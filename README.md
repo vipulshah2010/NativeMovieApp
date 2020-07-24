@@ -1,23 +1,44 @@
-# NativeMovieApp
-Simple movie application written in Kotlin Native which consumes https://www.themoviedb.org/documentation/api to fetch trending movie info and display it in RecyclerView.
+<h1 align="center">Movies</h1>
 
-## Features
+<p align="center">
+  <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
+</p>
 
-With the app, you can:
-* Retrieve list of recently trending movies.
-* Click on any movie title to view its poster.
+<p align="center">  
+Movies is a simple Kotlin Multiplatform application<br>This project demonstrates how common logic can be consumed by Android & iOS platforms.<br>
+</p>
+</br>
 
-## Screens
-| Movie Listing Android  | Movie Listing iOS |
-| ------------- | ------------- |
-| <img src="https://github.com/vipulshah2010/NativeMovieApp/blob/master/Final/MovieApp/screens/android.png" width="460" height="820">  | <img src="https://github.com/vipulshah2010/NativeMovieApp/blob/master/Final/MovieApp/screens/ios.png" width="418" height="800">
+<p align="center">
+<img src="/art/ios_simulator.png"/>
+</p>
 
-## Libraries
+## Library and Frameworks
+- Android - [Kotlin](https://kotlinlang.org/) based,
+- iOS - [SwiftUI](https://developer.apple.com/documentation/swiftui) based
+- Kotlin Multiplatform
+    - [multi-format reflectionless serialization](https://github.com/Kotlin/kotlinx.serialization) - generates visitor code for serializable classes
+    - [kotlinx.coroutines](https://github.com/Kotlin/kotlinx.coroutines) - Library support for Kotlin coroutines with multiplatform support
+    - [ktor-client-core](https://ktor.io/clients/http-client/multiplatform.html) - Multiplatform Http Client
+    - [ktor-client-serialization](https://ktor.io/clients/http-client/features/json-feature.html) - Multiplatform JSON serializing and de-serializing
+    - [Kingfisher](https://github.com/onevcat/Kingfisher) - Pure-Swift library for downloading and caching images from the web
 
-* [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)
-* [ktor](https://ktor.io/)
-* [kotlinx.coroutines](https://github.com/Kotlin/kotlinx.coroutines)
+## Find this repository useful? :heart:
+__[follow](https://twitter.com/_vipuls)__ me on twitter! 🤩
 
-## Associated Gists
-* [Instructions](https://gist.github.com/vipulshah2010/1db6dbe5761d78e6ca3854ce95db3274)
-* [Code Snippets](https://gist.github.com/vipulshah2010/0348a6d21e808f22c18fc05706060769)
+# License
+```xml
+Designed and developed by 2020 vipulshah2010 (Vipul Shah)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
