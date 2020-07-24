@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Kotlin/Native 1.3.20 - GameplayKit [ios_x64]">
-    <CLASSES>
-      <root url="file://$USER_HOME$/.konan/kotlin-native-macos-1.1.1/klib/platform/ios_x64/GameplayKit" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -1,0 +1,3 @@
+include ':SharedCode'
+include ':app'
+rootProject.name = "MovieApp"
