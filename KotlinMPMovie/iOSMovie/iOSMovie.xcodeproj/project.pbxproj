@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		92730E1324CC251C008EF8BA /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92730E1224CC251C008EF8BA /* ProgressBar.swift */; };
 		92846D3E24CB8D5E006E2CB2 /* KingfisherSwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92846D3D24CB8D5E006E2CB2 /* KingfisherSwiftUI.framework */; };
 		92846D3F24CB8D5E006E2CB2 /* KingfisherSwiftUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 92846D3D24CB8D5E006E2CB2 /* KingfisherSwiftUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		92846D4124CB8EE8006E2CB2 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92846D4024CB8EE8006E2CB2 /* Kingfisher.framework */; };
@@ -50,6 +51,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		92730E1224CC251C008EF8BA /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		92846D3D24CB8D5E006E2CB2 /* KingfisherSwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KingfisherSwiftUI.framework; path = Carthage/Build/iOS/KingfisherSwiftUI.framework; sourceTree = "<group>"; };
 		92846D4024CB8EE8006E2CB2 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		92BCCB6624CB85F900DEDCA5 /* iOSMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,6 +115,7 @@
 				92BCCB6924CB85F900DEDCA5 /* AppDelegate.swift */,
 				92BCCB6B24CB85F900DEDCA5 /* SceneDelegate.swift */,
 				92BCCB6D24CB85F900DEDCA5 /* ContentView.swift */,
+				92730E1224CC251C008EF8BA /* ProgressBar.swift */,
 				92BCCB6F24CB85FB00DEDCA5 /* Assets.xcassets */,
 				92BCCB7424CB85FB00DEDCA5 /* LaunchScreen.storyboard */,
 				92BCCB7724CB85FB00DEDCA5 /* Info.plist */,
@@ -275,6 +278,7 @@
 				92BCCB6A24CB85F900DEDCA5 /* AppDelegate.swift in Sources */,
 				92BCCB6C24CB85F900DEDCA5 /* SceneDelegate.swift in Sources */,
 				92BCCB9324CB869E00DEDCA5 /* MovieService.swift in Sources */,
+				92730E1324CC251C008EF8BA /* ProgressBar.swift in Sources */,
 				92BCCB6E24CB85F900DEDCA5 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
