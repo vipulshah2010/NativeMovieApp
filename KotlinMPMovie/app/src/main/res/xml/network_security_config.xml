@@ -2,7 +2,7 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">
-            gw.app.oss3.sbeu.at
+            image.tmdb.org
         </domain>
     </domain-config>
 </network-security-config>

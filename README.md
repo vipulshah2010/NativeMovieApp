@@ -9,12 +9,12 @@ Movies is a simple Kotlin Multiplatform application<br>This project demonstrates
 </p>
 </br>
 
-<p align="center">
-<img src="/previews/preview.gif" align="right" width="32%"/>
-</p>
+| iOS [SwiftUI] | Android [Jetpack Compose] |
+| --- | --- |
+| <img src="/previews/preview_ios.gif"/> | <img src="/previews/preview_android.gif" /> |
 
 ## Library and Frameworks
-- Android - [Kotlin](https://kotlinlang.org/) based,
+- Android - [Jetpack Compose](https://developer.android.com/jetpack/compose) based,
 - iOS - [SwiftUI](https://developer.apple.com/documentation/swiftui) based
 - Kotlin Multiplatform
     - [multi-format reflectionless serialization](https://github.com/Kotlin/kotlinx.serialization) - generates visitor code for serializable classes
