@@ -23,6 +23,13 @@ Movies is a simple Kotlin Multiplatform application<br>This project demonstrates
     - [ktor-client-serialization](https://ktor.io/clients/http-client/features/json-feature.html) - Multiplatform JSON serializing and de-serializing
     - [Kingfisher](https://github.com/onevcat/Kingfisher) - Pure-Swift library for downloading and caching images from the web
 
+
+## Limitations [WIP ;)]
+1. Using GlobalScope in SharedCode, which ofcourse lifecycle unaware
+2. Handle errors gracefully
+3. Test coverage
+4. Jetpack compose RatingView implementation 
+
 ## Find this repository useful? :heart:
 __[follow](https://twitter.com/_vipuls)__ me on twitter! 🤩
 
