@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">  
-Movies is a simple Kotlin Multiplatform application<br>This project demonstrates how common logic can be consumed by Android & iOS platforms.<br>
+Movies is a simple Kotlin Multiplatform application I Presented during [Kotlin Multiplatform Development Workshop](http://2019.mobilization.pl/#talk-kotlin_native_and_multiplatform_development)<br>This project demonstrates how common logic can be consumed by Android & iOS platforms.<br>
 </p>
 </br>
 
