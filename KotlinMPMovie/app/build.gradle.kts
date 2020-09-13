@@ -4,8 +4,7 @@ plugins {
     kotlin("android.extensions")
 }
 
-val composeVersion = "0.1.0-dev15"
-val kotlin_version = "1.4-M3"
+val composeVersion = "1.0.0-alpha01"
 
 android {
     compileSdkVersion(30)
@@ -41,7 +40,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion = "1.4.0-dev-withExperimentalGoogleExtensions-20200720"
+        kotlinCompilerVersion = "1.4.0"
         kotlinCompilerExtensionVersion = composeVersion
     }
 
@@ -78,11 +77,11 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 dependencies {
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
-    implementation("com.google.android.material:material:1.1.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.0")
+    implementation("com.google.android.material:material:1.2.1")
     implementation("androidx.core:core-ktx:1.3.1")
-    implementation("androidx.appcompat:appcompat:1.1.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-alpha06")
+    implementation("androidx.appcompat:appcompat:1.2.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-alpha07")
     implementation("androidx.activity:activity-ktx:1.1.0")
 
     implementation(project(":SharedCode"))
@@ -97,12 +96,12 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.ui:ui-tooling:$composeVersion")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
     implementation("com.squareup.picasso:picasso:2.71828")
 
 
     testImplementation("junit:junit:4.13")
-    androidTestImplementation("androidx.test.ext:junit:1.1.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.2")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 }

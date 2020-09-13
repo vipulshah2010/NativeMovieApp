@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
-    kotlin("plugin.serialization") version "1.3.70"
+    kotlin("plugin.serialization") version "1.4.0"
 }
 
 kotlin {
@@ -24,26 +24,22 @@ kotlin {
     jvm("android")
 
     sourceSets["commonMain"].dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-common:1.4.0")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
         implementation(kotlin("stdlib-common"))
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.20.0-1.4-M1-release-99")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.7-mpp-dev-11")
-        implementation("io.ktor:ktor-client-core:1.3.2-1.4-M3")
-        implementation("io.ktor:ktor-client-serialization:1.3.2-1.4-M3")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.8")
+        implementation("io.ktor:ktor-client-core:1.4.0")
+        implementation("io.ktor:ktor-client-serialization:1.4.0")
     }
 
     sourceSets["androidMain"].dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7-1.4-M3")
-        implementation("io.ktor:ktor-client-android:1.3.2-1.4-M3")
-        implementation("io.ktor:ktor-client-serialization-jvm:1.3.2-1.4-M3")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.0")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+        implementation("io.ktor:ktor-client-android:1.4.0")
     }
 
     sourceSets["iosMain"].dependencies {
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:0.20.0-1.4-M1-release-99")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.3.7-mpp-dev-11")
-        implementation("io.ktor:ktor-client-ios:1.3.2-1.4-M3")
-        implementation("io.ktor:ktor-client-serialization-native:1.3.2-1.4-M1-2")
+        implementation("io.ktor:ktor-client-ios:1.4.0")
     }
 }
 
