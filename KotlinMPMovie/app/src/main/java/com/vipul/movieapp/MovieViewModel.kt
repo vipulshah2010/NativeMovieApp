@@ -1,25 +1,33 @@
 package com.vipul.movieapp
 
-import MoviesApi
-import androidx.compose.Composable
+import MoviesRepository
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import model.Movie
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class MovieViewModel : ViewModel() {
 
-    @ExperimentalCoroutinesApi
-    @Composable
-    fun moviesLiveData() = liveData { emit(getMovies()) }
+    private val repository = MoviesRepository()
 
-    private suspend fun getMovies(): MovieResult<List<Movie>> = suspendCoroutine { continuation ->
-        MoviesApi().getMovies(success = {
-            continuation.resume(MovieResult.Success(it))
-        }, failure = {
-            continuation.resume(MovieResult.Error(it ?: Exception("Unknown Error!")))
-        })
+    private val _uiState = MutableStateFlow<MovieResult<List<Movie>>>(MovieResult.Loading)
+    val uiState: StateFlow<MovieResult<List<Movie>>> = _uiState.asStateFlow()
+
+    init {
+        loadMovies()
+    }
+
+    fun loadMovies() {
+        viewModelScope.launch {
+            _uiState.value = MovieResult.Loading
+            _uiState.value = try {
+                MovieResult.Success(repository.getMovies())
+            } catch (e: Exception) {
+                MovieResult.Error(e)
+            }
+        }
     }
 }

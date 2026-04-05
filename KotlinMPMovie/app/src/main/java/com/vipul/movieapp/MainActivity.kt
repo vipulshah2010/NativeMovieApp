@@ -1,219 +1,255 @@
 package com.vipul.movieapp
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.os.Bundle
-import android.util.Log
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.Box
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ContentGravity
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.Text
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredHeight
-import androidx.compose.foundation.layout.preferredWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.lazy.LazyColumnItems
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.onCommit
-import androidx.compose.runtime.state
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageAsset
-import androidx.compose.ui.graphics.asImageAsset
-import androidx.compose.ui.graphics.drawscope.drawCanvas
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.platform.setContent
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.squareup.picasso.Picasso
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.compose.AsyncImage
+import com.vipul.movieapp.ui.theme.MovieAppTheme
 import model.Movie
+import android.os.Bundle
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
-    private val movieViewModel: MovieViewModel by viewModels()
-
-    @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        enableEdgeToEdge()
         setContent {
-            MaterialTheme(colors = MaterialTheme.colors) {
-                Column {
-                    Crossfade(
-                        current = movieViewModel.moviesLiveData()
-                            .observeAsState(initial = MovieResult.Loading)
-                    ) { state ->
-                        state.run {
-                            when (state.value) {
-                                is MovieResult.Loading -> {
-                                    LoadingComponent()
-                                }
-                                is MovieResult.Success -> {
-                                    ComponentList(movies = (state.value as MovieResult.Success<List<Movie>>).data)
-                                }
-                                is MovieResult.Error -> {
-                                    Log.i("vipul", "Sample!")
-                                }
-                            }
-                        }
-                    }
-                }
+            MovieAppTheme {
+                MovieApp()
             }
         }
     }
+}
 
-    @Composable
-    private fun LoadingComponent() {
-        Box(modifier = Modifier.fillMaxSize(), gravity = ContentGravity.Center) {
-            CircularProgressIndicator(modifier = Modifier.wrapContentWidth(CenterHorizontally))
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MovieApp(viewModel: MovieViewModel = viewModel()) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text("Now Playing") })
         }
+    ) { innerPadding ->
+        MovieListScreen(
+            uiState = uiState,
+            onRetry = viewModel::loadMovies,
+            modifier = Modifier.padding(innerPadding),
+        )
     }
+}
 
-    @Composable
-    private fun ComponentList(movies: List<Movie>) {
-        LazyColumnItems(items = movies) { movie ->
-            Card(
-                shape = RoundedCornerShape(2.dp), backgroundColor = Color.White,
-                modifier = Modifier.padding(4.dp)
-            ) {
-                Row(
-                    Modifier.padding(
-                        8.dp,
-                        8.dp
-                    )
-                ) {
-                    NetworkImageComponentPicasso(url = "http://image.tmdb.org/t/p/w200${movie.poster_path}")
-                    Column(
-                        modifier = Modifier.padding(
-                            0.dp,
-                            20.dp,
-                            0.dp,
-                            0.dp
-                        ) + Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = movie.title,
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.Black
-                            )
-                        )
-                        Text(
-                            text = movie.release_date,
-                            style = TextStyle(
-                                fontSize = 14.sp,
-                                color = Color.Black
-                            )
-                        )
-                    }
-                    Column(
-                        modifier = Modifier.width(70.dp) +
-                                Modifier.height(200.dp),
-                        verticalArrangement = Arrangement.Center,
-                    ) {
-                        LinearProgressIndicator(
-                            modifier = Modifier.wrapContentWidth(CenterHorizontally),
-                            progress = getRating(movie = movie),
-                            color = getRatingColor(movie = movie)
-                        )
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = String.format("%.1f", getRating(movie = movie)),
-                            style = TextStyle(
-                                fontSize = 14.sp,
-                                textAlign = TextAlign.Center,
-                                color = Color.Black
-                            )
-                        )
-                    }
-                }
+@Composable
+fun MovieListScreen(
+    uiState: MovieResult<List<Movie>>,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier = modifier.fillMaxSize()) {
+        when (uiState) {
+            is MovieResult.Loading -> {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
-        }
-    }
-
-    @Composable
-    private fun getRating(movie: Movie) = (movie.vote_average / 10)
-
-    @Composable
-    private fun getRatingColor(movie: Movie) = when {
-        getRating(movie = movie) < 0.5 -> {
-            Color.Red
-        }
-        else -> {
-            Color.Green
+            is MovieResult.Success -> {
+                MovieList(movies = uiState.data)
+            }
+            is MovieResult.Error -> {
+                ErrorState(
+                    message = uiState.throwable.message ?: "Unknown error",
+                    onRetry = onRetry,
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun NetworkImageComponentPicasso(url: String) {
-    var image by state<ImageAsset?> { null }
-    var drawable by state<Drawable?> { null }
-    onCommit(url) {
-        val picasso = Picasso.get()
-        val target = object : com.squareup.picasso.Target {
-            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-                drawable = placeHolderDrawable
-            }
-
-            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-                drawable = errorDrawable
-            }
-
-            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                image = bitmap?.asImageAsset()
-            }
-        }
-        picasso
-            .load(url)
-            .into(target)
-
-        onDispose {
-            image = null
-            drawable = null
-            picasso.cancelRequest(target)
+private fun MovieList(
+    movies: List<Movie>,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        items(items = movies, key = { it.title + it.releaseDate }) { movie ->
+            MovieItem(movie = movie)
         }
     }
+}
 
-    val theImage = image
-    val theDrawable = drawable
-    if (theImage != null) {
-        Column {
-            val imageModifier =
-                Modifier.width(150.dp) +
-                        Modifier.height(200.dp) +
-                        Modifier.clip(RoundedCornerShape(8.dp))
-            Image(theImage, modifier = imageModifier)
-        }
-    } else if (theDrawable != null) {
-        Canvas(modifier = Modifier.preferredHeight(100.dp) + Modifier.preferredWidth(150.dp)) {
-            drawCanvas { canvas, _ ->
-                theDrawable.draw(canvas.nativeCanvas)
+@Composable
+fun MovieItem(
+    movie: Movie,
+    modifier: Modifier = Modifier,
+) {
+    val posterUrl = "${MoviesRepository.POSTER_BASE_URL}${movie.posterPath}"
+    val rating = movie.voteAverage / 10f
+
+    Card(
+        shape = RoundedCornerShape(8.dp),
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Row(modifier = Modifier.padding(8.dp)) {
+            AsyncImage(
+                model = posterUrl,
+                contentDescription = "Poster for ${movie.title}",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .width(100.dp)
+                    .height(150.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+            )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 12.dp, top = 8.dp),
+            ) {
+                Text(
+                    text = movie.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = movie.releaseDate,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(top = 4.dp),
+                )
+                Text(
+                    text = movie.overview,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(top = 4.dp),
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .width(56.dp)
+                    .height(150.dp)
+                    .padding(start = 8.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                LinearProgressIndicator(
+                    progress = { rating },
+                    color = if (rating >= 0.5f) Color(0xFF4CAF50) else Color(0xFFF44336),
+                    modifier = Modifier.size(40.dp),
+                )
+                Text(
+                    text = String.format("%.1f", movie.voteAverage),
+                    style = MaterialTheme.typography.labelMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 4.dp),
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun ErrorState(
+    message: String,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        Text(
+            text = "Failed to load movies",
+            style = MaterialTheme.typography.titleMedium,
+        )
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.error,
+            textAlign = TextAlign.Center,
+        )
+        Button(onClick = onRetry) {
+            Text("Retry")
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Movie Item")
+@Composable
+private fun MovieItemPreview() {
+    MovieAppTheme {
+        MovieItem(
+            movie = Movie(
+                posterPath = "/test.jpg",
+                title = "The Outpost",
+                voteAverage = 7.5f,
+                releaseDate = "2024-06-24",
+                overview = "A small team of US soldiers battles to defend their remote outpost.",
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Loading State")
+@Composable
+private fun LoadingPreview() {
+    MovieAppTheme {
+        MovieListScreen(
+            uiState = MovieResult.Loading,
+            onRetry = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Error State")
+@Composable
+private fun ErrorPreview() {
+    MovieAppTheme {
+        MovieListScreen(
+            uiState = MovieResult.Error(Exception("Network unavailable")),
+            onRetry = {},
+        )
     }
 }
