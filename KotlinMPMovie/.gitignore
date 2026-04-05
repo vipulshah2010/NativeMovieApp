@@ -1,14 +1,76 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
+# ===== Android =====
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+bin/
+gen/
+out/
+.gradle/
+build/
+local.properties
+captures/
+.navigation/
 .externalNativeBuild
-.cxx
+.cxx/
+google-services.json
+
+# IntelliJ / Android Studio — ignore all IDE-managed files
+*.iml
+.idea/
+
+# Kotlin / KMP
+.kotlin/
+kotlin-js-store/
+
+# Proguard
+proguard/
+*.log
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+fastlane/readme.md
+
+# Keystore
+#*.jks
+#*.keystore
+
+# ===== iOS / Xcode =====
+xcuserdata/
+DerivedData/
+*.xcscmblueprint
+*.xccheckout
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+.build/
+# Packages/
+# Package.pins
+# Package.resolved
+
+# Carthage (removed — now using Swift AsyncImage directly)
+KotlinMPMovie/iOSMovie/Carthage/
+
+# CocoaPods
+# Pods/
+
+# Code Injection
+iOSInjectionProject/

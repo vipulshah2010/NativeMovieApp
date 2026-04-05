@@ -1,5 +1,6 @@
 package com.vipul.movieapp
 
+import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -117,6 +118,7 @@ private fun MovieList(
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun MovieItem(
     movie: Movie,
