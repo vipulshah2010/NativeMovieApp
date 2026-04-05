@@ -1,68 +1,92 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
-    kotlin("multiplatform")
-    kotlin("plugin.serialization") version "1.4.0"
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.android.library)
+}
+
+android {
+    namespace = "com.vipul.movieapp.shared"
+    compileSdk = 35
+
+    defaultConfig {
+        minSdk = 26
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
 }
 
 kotlin {
-    //select iOS target platform depending on the Xcode environment variables
-    val iOSTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
-        if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
-            ::iosArm64
-        else
-            ::iosX64
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_1)
+    }
 
-    iOSTarget("ios") {
-        binaries {
-            framework {
-                baseName = "SharedCode"
-            }
+    androidTarget {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
-    jvm("android")
-
-    sourceSets["commonMain"].dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-common:1.4.0")
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC")
-        implementation(kotlin("stdlib-common"))
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.8")
-        implementation("io.ktor:ktor-client-core:1.4.0")
-        implementation("io.ktor:ktor-client-serialization:1.4.0")
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "SharedCode"
+            isStatic = true
+        }
     }
 
-    sourceSets["androidMain"].dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.0")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
-        implementation("io.ktor:ktor-client-android:1.4.0")
-    }
-
-    sourceSets["iosMain"].dependencies {
-        implementation("io.ktor:ktor-client-ios:1.4.0")
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+        }
+        androidMain.dependencies {
+            implementation(libs.ktor.client.cio)
+            implementation(libs.kotlinx.coroutines.android)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+        }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+        }
     }
 }
 
-
-val packForXcode by tasks.creating(Sync::class) {
+// Assembles the iOS framework for Xcode integration.
+// Called from the Xcode build phase: ./gradlew :SharedCode:buildForXcode
+val buildForXcode by tasks.registering(Sync::class) {
     group = "build"
+    description = "Assembles the iOS framework for Xcode integration"
 
-    //selecting the right configuration for the iOS framework depending on the Xcode environment variables
     val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
-    val framework = kotlin.targets.getByName<KotlinNativeTarget>("ios").binaries.getFramework(mode)
+    val sdkName = System.getenv("SDK_NAME") ?: "iphonesimulator"
+    val isDevice = sdkName.startsWith("iphoneos")
 
-    inputs.property("mode", mode)
+    val iosTarget: KotlinNativeTarget = if (isDevice) {
+        kotlin.targets.getByName<KotlinNativeTarget>("iosArm64")
+    } else {
+        kotlin.targets.getByName<KotlinNativeTarget>("iosSimulatorArm64")
+    }
+
+    val framework = iosTarget.binaries.getFramework(mode)
     dependsOn(framework.linkTask)
 
-    val targetDir = File(buildDir, "xcode-frameworks")
-    from({ framework.outputDirectory })
-    into(targetDir)
-
-    doLast {
-        val gradlew = File(targetDir, "gradlew")
-        gradlew.writeText("#!/bin/bash\nexport 'JAVA_HOME=${System.getProperty("java.home")}'\ncd '${rootProject.rootDir}'\n./gradlew \$@\n")
-        gradlew.setExecutable(true)
-    }
+    from(framework.outputDirectory)
+    into(layout.buildDirectory.dir("xcode-frameworks"))
 }
-
-tasks.getByName("build").dependsOn(packForXcode)

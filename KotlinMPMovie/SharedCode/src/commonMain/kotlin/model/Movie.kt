@@ -1,12 +1,13 @@
 package model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Movie(
-    val poster_path: String,
+    @SerialName("poster_path") val posterPath: String,
     val title: String,
-    val vote_average: Float,
-    val release_date: String,
+    @SerialName("vote_average") val voteAverage: Float,
+    @SerialName("release_date") val releaseDate: String,
     val overview: String
 )
