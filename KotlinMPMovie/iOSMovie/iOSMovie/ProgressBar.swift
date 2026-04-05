@@ -2,33 +2,47 @@
 //  ProgressBar.swift
 //  iOSMovie
 //
-//  Created by Vipul Shah on 25/07/2020.
 //  Copyright © 2020 Vipul. All rights reserved.
 //
+//  Licensed under the Apache License, Version 2.0
 
 import SwiftUI
 
 struct ProgressBar: View {
-    @Binding var progress: Float
-    
+
+    let progress: Float
+
+    private var color: Color {
+        progress >= 0.5 ? .green : .red
+    }
+
     var body: some View {
         ZStack {
             Circle()
                 .stroke(lineWidth: 5.0)
                 .opacity(0.3)
-                .foregroundColor((progress <= 0.5) ? Color.red:Color.green)
-            
+                .foregroundStyle(color)
+
             Circle()
-                .trim(from: 0.0, to: CGFloat(min(self.progress, 1.0)))
+                .trim(from: 0.0, to: CGFloat(min(progress, 1.0)))
                 .stroke(style: StrokeStyle(lineWidth: 5.0, lineCap: .round, lineJoin: .round))
-                .foregroundColor((progress <= 0.5) ? Color.red:Color.green)
-                .rotationEffect(Angle(degrees: 270.0))
-                .animation(.linear)
-            Text(String(format: "%.0f%%", min(self.progress, 1.0)*100.0))
+                .foregroundStyle(color)
+                .rotationEffect(.degrees(270.0))
+                .animation(.linear, value: progress)
+
+            Text(String(format: "%.0f%%", min(progress, 1.0) * 100.0))
                 .font(.caption)
                 .bold()
         }
     }
 }
 
-
+#Preview {
+    HStack {
+        ProgressBar(progress: 0.35)
+            .frame(width: 60, height: 60)
+        ProgressBar(progress: 0.75)
+            .frame(width: 60, height: 60)
+    }
+    .padding()
+}
