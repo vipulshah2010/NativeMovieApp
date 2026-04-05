@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MovieApp"
+rootProject.name = "KMPMovies"
 include(":SharedCode")
 include(":app")
