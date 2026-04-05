@@ -22,7 +22,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -175,10 +175,12 @@ fun MovieItem(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                LinearProgressIndicator(
+                CircularProgressIndicator(
                     progress = { rating },
                     color = if (rating >= 0.5f) Color(0xFF4CAF50) else Color(0xFFF44336),
-                    modifier = Modifier.size(40.dp),
+                    trackColor = (if (rating >= 0.5f) Color(0xFF4CAF50) else Color(0xFFF44336)).copy(alpha = 0.2f),
+                    strokeWidth = 4.dp,
+                    modifier = Modifier.size(44.dp),
                 )
                 Text(
                     text = String.format("%.1f", movie.voteAverage),

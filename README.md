@@ -11,9 +11,9 @@ Shared network/domain logic consumed by Android (Jetpack Compose) and iOS (Swift
 
 ---
 
-| iOS [SwiftUI] | Android [Jetpack Compose] |
-| --- | --- |
-| <img src="/previews/preview_ios.gif"/> | <img src="/previews/preview_android.gif" /> |
+| iOS [SwiftUI]                           | Android [Jetpack Compose] |
+|-----------------------------------------| --- |
+| <img src="/previews/preview_ios.png" width="250"/> | <img src="/previews/preview_android.png" width="250"/> |
 
 ---
 
