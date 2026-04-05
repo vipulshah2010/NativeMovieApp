@@ -16,7 +16,7 @@ captures/
 .cxx/
 google-services.json
 
-# IntelliJ / Android Studio — ignore all IDE-managed files
+# IntelliJ / Android Studio
 *.iml
 .idea/
 
@@ -38,6 +38,9 @@ fastlane/readme.md
 # Keystore
 #*.jks
 #*.keystore
+
+# Claude Code local settings
+.claude/
 
 # ===== iOS / Xcode =====
 xcuserdata/
@@ -62,12 +65,6 @@ playground.xcworkspace
 
 # Swift Package Manager
 .build/
-# Packages/
-# Package.pins
-# Package.resolved
-
-# Carthage (removed — now using Swift AsyncImage directly)
-KotlinMPMovie/iOSMovie/Carthage/
 
 # CocoaPods
 # Pods/

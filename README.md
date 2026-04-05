@@ -47,7 +47,7 @@ Shared network/domain logic consumed by Android (Jetpack Compose) and iOS (Swift
 ## Project Structure
 
 ```
-KotlinMPMovie/
+.
 ├── SharedCode/                 # KMP shared module
 │   └── src/
 │       ├── commonMain/kotlin/
@@ -86,7 +86,7 @@ KotlinMPMovie/
 
 ### Android
 
-1. Open the `KotlinMPMovie/` folder in Android Studio.
+1. Open the repo root in Android Studio.
 2. Let Gradle sync complete.
 3. Run the `:app` configuration on an emulator or device (API 26+, API 35 recommended).
 
@@ -104,7 +104,7 @@ KotlinMPMovie/
 
 > **Note:** iOS requires building the `SharedCode` framework first.
 
-1. From `KotlinMPMovie/`, run:
+1. From the repo root, run:
    ```bash
    ./gradlew :SharedCode:buildForXcode
    ```
@@ -112,9 +112,7 @@ KotlinMPMovie/
 
 2. In Xcode, verify the framework search path in the `iOSMovie` target points to `../SharedCode/build/xcode-frameworks`.
 
-3. **Remove the legacy Kingfisher framework** from the Xcode target's *Frameworks, Libraries, and Embedded Content* section — it has been replaced by SwiftUI's built-in `AsyncImage`.
-
-4. Build and run the `iOSMovie` scheme.
+3. Open `iOSMovie/iOSMovie.xcodeproj` and build the `iOSMovie` scheme.
 
 ---
 
